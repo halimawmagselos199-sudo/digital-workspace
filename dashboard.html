@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- HEADER -->
+    <header class="dashboard-header">
+    <div class="header-left">
+        <img src="assetslogo.jpg" class="logo small">
+        <h2>Welcome, <span id="user"></span> 👋</h2>
+    </div>
+
+    <div class="header-right">
+            <a href="https://www.foodpanda.ph/restaurant/zspx/ssamjang-express-restro-and-k-mart"
+            target="_blank"
+            class="foodpanda-link">
+            <img src="pandamart.png" alt="Foodpanda">
+        </a>
+            <a href="https://www.facebook.com/ssamjangexpressmart"
+                target="_blank"
+                class="facebook-link">
+            <img src="facebook.png" alt="Facebook">
+        </a>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <nav class="menu">
+        <button onclick="openSection('inventory')">Inventory</button>
+        <button onclick="openSection('sales')">Sales</button>
+        <button onclick="openSection('reports')">Reports</button>
+        <button onclick="openSection('calendar')">Calendar</button>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <!-- INVENTORY -->
+        <section id="inventory" class="section">
+            <h3>Inventory Management</h3>
+            <div class="inventory-form">
+                <input type="text" id="itemName" placeholder="Item Name">
+                <input type="number" id="itemQty" placeholder="Quantity">
+                <input type="number" id="itemPrice" placeholder="Price">
+                <button onclick="addItem()">Add Item</button>
+            </div>
+
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Adjust</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryList"></tbody>
+            </table>
+        </section>
+
+        <!-- SALES -->
+        <section id="sales" class="section">
+            <h3>Sales Overview</h3>
+            <canvas id="salesChart"></canvas>
+        </section>
+
+        <!-- REPORTS -->
+        <section id="reports" class="section">
+            <h3>Performance Reports</h3>
+            <canvas id="reportChart"></canvas>
+        </section>
+        <!-- CALENDAR -->
+        <section id="calendar" class="section">
+            <h3>Delivery / Task Calendar</h3>
+
+         <div class="inventory-form">
+        <input type="date" id="deliveryDate">
+        <input type="text" id="deliveryNote" placeholder="Delivery / Task Description">
+        <button onclick="addDelivery()">Add</button>
+        </div>
+
+        <table class="inventory-table">
+        <thead>
+            <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Delete</th>
+            </tr>
+        </thead>
+            <tbody id="calendarList"></tbody>
+        </table>
+        </section>
+
+    </main>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>
