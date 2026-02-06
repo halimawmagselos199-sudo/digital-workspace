@@ -4,6 +4,7 @@ if (!user) window.location.href = "index.html";
 document.getElementById("user").textContent = user;
 
 // ================= GLOBAL VARIABLES =================
+let sales = JSON.parse(localStorage.getItem("sales")) || [];
 let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
 let salesChart, reportChart;
 
@@ -102,6 +103,16 @@ function saveDeliveries() {
 }
 
 function adjustQty(index, amount) {
+    if (amount < 0 && inventory[index].qty > 0) {
+        sales.push({
+            item: inventory[index].name,
+            price: inventory[index].price,
+            date: new Date().toISOString().split("T")[0]
+        });
+
+        localStorage.setItem("sales", JSON.stringify(sales));
+    }
+
     inventory[index].qty = Math.max(0, inventory[index].qty + amount);
     saveInventory();
     renderInventory();
@@ -134,20 +145,36 @@ function loadSalesChart() {
     const ctx = document.getElementById("salesChart");
     if (salesChart) salesChart.destroy();
 
+    const sales = JSON.parse(localStorage.getItem("sales")) || [];
+
+    const dailyTotals = {};
+
+    sales.forEach(sale => {
+        dailyTotals[sale.date] = (dailyTotals[sale.date] || 0) + sale.price;
+    });
+
+    const labels = Object.keys(dailyTotals);
+    const data = Object.values(dailyTotals);
+
     salesChart = new Chart(ctx, {
         type: "line",
         data: {
-            labels: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+            labels,
             datasets: [{
-                label: "Sales ($)",
-                data: [120, 190, 300, 250, 220, 340, 400],
+                label: "Sales (₱)",
+                data,
                 borderColor: "#1d2671",
                 backgroundColor: "rgba(29,38,113,0.2)",
                 tension: 0.4,
                 fill: true
             }]
         },
-        options: { responsive: true, plugins: { legend: { display: true } } }
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true }
+            }
+        }
     });
 }
 
